@@ -471,8 +471,13 @@ Promise.all([promise1, promise2, promise3])
 
 참조
 
+```
 https://gurindernarang.medium.com/asynchronous-programming-callbacks-async-await-promises-in-js-19e294e84a79
 
 https://inpa.tistory.com/entry/%F0%9F%8C%90-js-async#%EC%99%9C_%EC%99%84%EB%B2%BD%ED%95%9C_%EB%A9%80%ED%8B%B0_%EC%8A%A4%EB%A0%88%EB%94%A9%EC%9D%B4_%EC%95%84%EB%8B%8C%EA%B0%80
 
 https://inpa.tistory.com/entry/JS-%F0%9F%93%9A-%EB%B9%84%EB%8F%99%EA%B8%B0%EC%B2%98%EB%A6%AC-async-await
+```
+
+
+
