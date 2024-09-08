@@ -17,22 +17,20 @@ search: true
 
 ![sync](/images/2024-09-07-first/sync.png)
 
-- 동기(Synchronous) 
+- 동기(Synchronous)
 
   - 하나의 작업이 완료될 때까지 기다리며, 그 이후에 다음 작업을 진행하는 방식
   - 코딩을 하면서 일반적으로 각 코드가 위에서 아래로 차례로 실행되는 방식이라고 할 수 있다.
 
-- 비동기(Asynchronous) 
+- 비동기(Asynchronous)
 
-  - 작업을 요청하고, 그 작업이 끝나는 것을 기다리지 않고 다음 작업을 진행하는 방식. 
+  - 작업을 요청하고, 그 작업이 끝나는 것을 기다리지 않고 다음 작업을 진행하는 방식.
   - 요청한 작업이 완료되면 콜백, 프로미스(Promise), 혹은 async/await 패턴을 통해 결과를 처리한다.
   - 비동기는 메인스레드가 작업을 다른 곳에 인가하여 처리하게 하고, 그 작업이 완료되면 콜백 함수를 받아 실행하는 방식이다.
 
-  
-
 ## 2. Node.js에서 비동기 처리 방식이 필요한 이유
 
-Node.js는 기본적으로 싱글스레드에서 동작하기 때문에, 메인 스레드가 하나의 작업을 처리하는 동안 다른 작업을 수행할 수 없는 문제가 발생한다. 특히, 이러한 특징은 동기적인 코드 작성 시에 큰 문제가 될 수 있다. 예를 들어, 동기 방식으로 I/O 작업(예: 파일 읽기, 데이터베이스 쿼리, 네트워크 요청)을 처리하면, 메인 스레드는 해당 작업이 완료될 때까지 다른 모든 요청을 처리하지 못하고 대기 상태에 빠진다. 이로 인해 전체 애플리케이션의 성능이 급격히 저하될 수 있다. 
+Node.js는 기본적으로 싱글스레드에서 동작하기 때문에, 메인 스레드가 하나의 작업을 처리하는 동안 다른 작업을 수행할 수 없는 문제가 발생한다. 특히, 이러한 특징은 동기적인 코드 작성 시에 큰 문제가 될 수 있다. 예를 들어, 동기 방식으로 I/O 작업(예: 파일 읽기, 데이터베이스 쿼리, 네트워크 요청)을 처리하면, 메인 스레드는 해당 작업이 완료될 때까지 다른 모든 요청을 처리하지 못하고 대기 상태에 빠진다. 이로 인해 전체 애플리케이션의 성능이 급격히 저하될 수 있다.
 
 ### 비동기 처리가 없을 때 발생하는 문제들
 
@@ -44,8 +42,6 @@ Node.js는 기본적으로 싱글스레드에서 동작하기 때문에, 메인 
    - Node.js의 이벤트 루프는 비동기 처리 덕분에 효율적으로 많은 클라이언트 요청을 동시에 처리할 수 있다. 동기 코드를 사용하게 되면 요청을 처리하는 데 시간이 오래 걸리며, 이를 해결하기 위해 더 많은 서버 리소스가 필요하게 되어 확장성이 떨어질 수 있다.
 4. 자원 낭비
    - 동기적 I/O는 메인 스레드를 낭비하게 만든다. 예를 들어, 서버가 파일을 읽는 동안 아무런 작업도 하지 못하고 단순히 대기하게 되는데, 이는 CPU와 메모리 자원을 비효율적으로 사용하게 만든다.
-
-
 
 ## 3. Node.js에서 사용되는 비동기 처리 방식 3가지
 
@@ -65,34 +61,35 @@ Node.js는 기본적으로 싱글스레드에서 동작하기 때문에, 메인 
 #### ③ 콜백 함수 사용 예시
 
 ```javascript
-function processArray(arr, callback){
+function processArray(arr, callback) {
   arr.forEach((element, index) => {
     setTimeout(() => {
       console.log(`처리중인 요소: ${element}`);
       callback(element);
-    }, 1000 * (index + 1))
+    }, 1000 * (index + 1));
   });
 }
 
 function printElement(element) {
-  console.log(`처리된 요소: ${element}`)
+  console.log(`처리된 요소: ${element}`);
 }
 
-const numbers = [1,2,3,4,5]
+const numbers = [1, 2, 3, 4, 5];
 
-processArray(numbers, printElement)
+processArray(numbers, printElement);
 ```
 
 **상세 설명**
 
 1. `processArray` 함수 정의
+
    - 이 함수는 배열 `arr`와 콜백 함수 `callback`을 인자로 받는다.
    - `arr.forEach()` 메서드를 사용하여 배열의 각 요소를 반복하면서, 각 요소에 대해 1초 간격으로 콜백 함수를 호출한다.
 
 2. `processArray` 함수 호출
    - `processArray(numbers, printElement);`를 호출하여 `numbers` 배열 `[1, 2, 3, 4, 5]`과 `printElement`라는 콜백 함수를 전달한다.
 3. 배열 요소 반복
-   - `arr.forEach((element, index) => {...})`가 실행된다. 
+   - `arr.forEach((element, index) => {...})`가 실행된다.
    - 이때 배열의 각 요소가 `element`로 전달되며, 요소의 인덱스는 `index`로 전달된다.
 4. `setTimeout`을 통한 비동기 처리
    - 각 요소에 대해 `setTimeout`이 설정되며, 이 함수는 비동기적으로 1초씩 지연되면서 실행된다.
@@ -163,7 +160,7 @@ processArray(numbers, printElement);
 
 - Promise란 비동기 작업의 완료 또는 실패를 나타내는 객체이다.
 
-- 비동기 작업의 상태와 결과를 관리하며, 비동기 작업이 끝났을 때 특정 동작을 수행하도록 예약할 수 있다. 
+- 비동기 작업의 상태와 결과를 관리하며, 비동기 작업이 끝났을 때 특정 동작을 수행하도록 예약할 수 있다.
 
 - 콜백 지옥을 해결하기 위해 등장했으며, then/catch 메서드를 통해 비동기 흐름을 제어할 수 있다.
 
@@ -175,14 +172,14 @@ processArray(numbers, printElement);
     const success = true; // 작업의 성공 여부 예시
   
     if (success) {
-      resolve('작업 성공'); // 성공 시 호출
+      resolve("작업 성공"); // 성공 시 호출
     } else {
-      reject('작업 실패'); // 실패 시 호출
+      reject("작업 실패"); // 실패 시 호출
     }
   });
   ```
 
-#### ② Promise의  상태
+#### ② Promise의 상태
 
 1. Pending (대기중) : 초기 상태, 비동기 작업이 아직 완료되지 않은 상태.
 2. Fulfilled (이행됨) : 비동기 작업이 성공적으로 완료된 상태.
@@ -195,13 +192,13 @@ Promise는 상태가 변할 때, 그 결과값을 처리할 수 있도록 `.then
 1. `.then()`
 
    - `Promise`가 성공(`Fulfilled`)했을 때 실행할 콜백 함수를 등록한다.
-   - `.then()`은 `Promise`를 반환하므로 체이닝이 가능하다. 
+   - `.then()`은 `Promise`를 반환하므로 체이닝이 가능하다.
 
    ```javascript
    promise
      .then((result) => {
        console.log(result); // 성공 시 메시지 출력
-       return '다음 작업';
+       return "다음 작업";
      })
      .then((next) => {
        console.log(next); // 체이닝으로 다음 작업 실행
@@ -216,10 +213,10 @@ Promise는 상태가 변할 때, 그 결과값을 처리할 수 있도록 `.then
    ```javascript
    promise
      .then((result) => {
-       throw new Error('에러 발생'); // 에러 강제 발생
+       throw new Error("에러 발생"); // 에러 강제 발생
      })
      .catch((error) => {
-       console.error('에러 처리:', error.message); // 에러 처리
+       console.error("에러 처리:", error.message); // 에러 처리
      });
    ```
 
@@ -229,10 +226,9 @@ Promise는 상태가 변할 때, 그 결과값을 처리할 수 있도록 `.then
    - 주로 리소스 정리 등의 마무리 작업에 사용된다.
 
    ```javascript
-   promise
-     .finally(() => {
-       console.log('작업이 끝났습니다.'); // 작업 완료 후 실행
-     });
+   promise.finally(() => {
+     console.log("작업이 끝났습니다."); // 작업 완료 후 실행
+   });
    ```
 
 #### ④ Promise의 사용 예시
@@ -241,7 +237,7 @@ Promise는 상태가 변할 때, 그 결과값을 처리할 수 있도록 `.then
 function fetchData() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const data = { name: 'John', age: 30 };
+      const data = { name: "John", age: 30 };
       resolve(data); // 데이터 가져오기 성공
     }, 1000);
   });
@@ -249,13 +245,13 @@ function fetchData() {
 
 fetchData()
   .then((data) => {
-    console.log('데이터:', data); // 작업 성공 시 실행
+    console.log("데이터:", data); // 작업 성공 시 실행
   })
   .catch((error) => {
-    console.error('에러:', error); // 작업 실패 시 실행
+    console.error("에러:", error); // 작업 실패 시 실행
   })
   .finally(() => {
-    console.log('작업 완료'); // 성공 여부와 상관없이 항상 실행
+    console.log("작업 완료"); // 성공 여부와 상관없이 항상 실행
   });
 ```
 
@@ -273,18 +269,18 @@ fetchData()
 ```javascript
 fetchData()
   .then((data) => {
-    console.log('데이터 받음:', data);
+    console.log("데이터 받음:", data);
     return processData(data); // 다음 비동기 작업 호출
   })
   .then((processedData) => {
-    console.log('데이터 처리 완료:', processedData);
+    console.log("데이터 처리 완료:", processedData);
     return saveData(processedData);
   })
   .then(() => {
-    console.log('데이터 저장 완료');
+    console.log("데이터 저장 완료");
   })
   .catch((error) => {
-    console.error('에러 발생:', error);
+    console.error("에러 발생:", error);
   });
 ```
 
@@ -315,11 +311,7 @@ fetchData()
 2. 에러 처리 복잡성 : `.catch()`를 사용해 에러를 처리하지만, 중간에 발생한 에러를 특정 위치에서 처리하거나, 에러 처리 흐름을 조절하는 데 있어서 코드가 지저분해질 수 있다. 또한, 여러 `.then()` 사이에 에러가 발생하면, `.catch()`로 에러가 전달되는 위치를 파악하기 어려울 수 있다.
 3. 디버깅 어려움 : `romise` 체이닝에서 발생하는 에러의 스택 트레이스가 비동기적으로 처리되기 때문에, 에러가 발생한 원래 위치를 찾기가 어렵고, 이로 인해 디버깅이 까다로워질 수 있다.
 
-
-
 Promise의 단점들을 보완하고자 나온 개념이 `async/await` 이다.
-
-
 
 ### 3) async/await
 
@@ -347,9 +339,7 @@ async function handleData() {
 - async/await이란 Promise 기반의 코드를 더 읽기 쉽고 동기적으로 보이게 작성할 수 있는 문법이다.
 
 - async 함수는 항상 Promise를 반환하며, 함수 내부에서 await은 Promise가 해결될 때까지 기다린다. 이는 비동기 작업을 동기적인 방식으로 처리할 수 있게 도와준다.
-- async/await은 ES2017에 도입된 문법이고, Promise를 대체하기 위해 나온 것이 아니라 보완하기 위해 나온 개념이다. 
-
-
+- async/await은 ES2017에 도입된 문법이고, Promise를 대체하기 위해 나온 것이 아니라 보완하기 위해 나온 개념이다.
 
 #### ② async/await 사용법
 
@@ -361,7 +351,7 @@ async function handleData() {
   function fetchData() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const data = { name: 'John', age: 30 };
+        const data = { name: "John", age: 30 };
         resolve(data); // 데이터 가져오기 성공
       }, 1000);
     });
@@ -370,24 +360,24 @@ async function handleData() {
   // Promise 사용 예시
   fetchData()
     .then((data) => {
-      console.log('데이터:', data); // 작업 성공 시 실행
+      console.log("데이터:", data); // 작업 성공 시 실행
     })
     .catch((error) => {
-      console.error('에러:', error); // 작업 실패 시 실행
+      console.error("에러:", error); // 작업 실패 시 실행
     })
     .finally(() => {
-      console.log('작업 완료'); // 성공 여부와 상관없이 항상 실행
+      console.log("작업 완료"); // 성공 여부와 상관없이 항상 실행
     });
   
   // async/await 사용
   async function handleData() {
     try {
       const data = await fetchData(); // fetchData가 resolve될 때까지 기다림
-      console.log('데이터:', data); // 성공 시 데이터 출력
+      console.log("데이터:", data); // 성공 시 데이터 출력
     } catch (error) {
-      console.error('에러:', error); // 실패 시 에러 처리
+      console.error("에러:", error); // 실패 시 에러 처리
     } finally {
-      console.log('작업 완료'); // 성공 여부와 상관없이 항상 실행
+      console.log("작업 완료"); // 성공 여부와 상관없이 항상 실행
     }
   }
   ```
@@ -398,13 +388,11 @@ async function handleData() {
   - `try...catch` 블록을 사용하여 에러를 처리합니다. `Promise`에서 `.catch()`를 사용하는 것과 같은 역할을 하며, 에러 발생 시 `catch` 블록이 실행된다.
   - `finally` 블록은 성공 여부와 상관없이 항상 실행되며, 리소스 정리와 같은 마무리 작업을 할 때 유용하다. 이는 `.finally()` 메서드와 동일한 기능을 한다.
 
-
-
 #### ③ 키워드 async와 await
 
 **1) async의 리턴값은 Promise 객체이다.**
 
-<img src="/images/2024-09-07-first/스크린샷 2024-09-08 오후 4.36.29.png" alt="스크린샷 2024-09-08 오후 4.36.29" style="zoom:50%; float: left;" />
+![async-return-promise](/images/2024-09-07-async-programming/async-return-promise.png) 
 
 단순히 숫자를 리턴하더라도 `fulfilled` 상태의 promise 객체로 감싸진 형태의 리턴값이 반환된다.
 
@@ -418,10 +406,8 @@ async function getData() {
 }
 ```
 
-- `getData()` async 함수 내에서 `fetch()` 비동기 함수를 호출하고, 반환된 Promise를 await 으로 처리한다. await 덕분에 함수 내 코드 실행이 일시 중지되고 동기적으로 `fetch()` 함수가 완료될 때까지 기다린다.  `fetch()` 함수가 성공적으로 완료되면, 그 다음 코드가 실행된다.
+- `getData()` async 함수 내에서 `fetch()` 비동기 함수를 호출하고, 반환된 Promise를 await 으로 처리한다. await 덕분에 함수 내 코드 실행이 일시 중지되고 동기적으로 `fetch()` 함수가 완료될 때까지 기다린다. `fetch()` 함수가 성공적으로 완료되면, 그 다음 코드가 실행된다.
 - 이제 `response.json()` 함수가 호출되는데, 이때도 await으로 처리하여 성공적으로 가져와지면 data 변수에 할당한다.
-
-
 
 #### ④ Promise.all 메소드
 
@@ -433,7 +419,7 @@ Promise.all([promise1, promise2, promise3])
     console.log(results); // 모든 Promise의 결과가 배열로 반환됨
   })
   .catch((error) => {
-    console.error('에러 발생:', error); // 하나라도 실패하면 이곳으로 이동
+    console.error("에러 발생:", error); // 하나라도 실패하면 이곳으로 이동
   });
 ```
 
@@ -451,22 +437,22 @@ function fetchData(url) {
       if (url) {
         resolve(`Data from ${url}`); // 성공 시 데이터 반환
       } else {
-        reject('URL이 없습니다.'); // 실패 시 에러 발생
+        reject("URL이 없습니다."); // 실패 시 에러 발생
       }
     }, Math.random() * 2000); // 0~2초 사이의 랜덤 지연
   });
 }
 
-const promise1 = fetchData('url1');
-const promise2 = fetchData('url2');
-const promise3 = fetchData('url3');
+const promise1 = fetchData("url1");
+const promise2 = fetchData("url2");
+const promise3 = fetchData("url3");
 
 Promise.all([promise1, promise2, promise3])
   .then((results) => {
-    console.log('모든 데이터:', results); // 각 Promise의 결과가 배열로 반환됨
+    console.log("모든 데이터:", results); // 각 Promise의 결과가 배열로 반환됨
   })
   .catch((error) => {
-    console.error('에러 발생:', error); // 하나라도 실패하면 에러 출력
+    console.error("에러 발생:", error); // 하나라도 실패하면 에러 출력
   });
 
 // '모든 데이터:' [ 'Data from url1', 'Data from url2', 'Data from url3' ]
@@ -483,8 +469,6 @@ Promise.all([promise1, promise2, promise3])
    - 여러 `Promise` 중 첫 번째로 실패한 `Promise`의 에러만 잡아내기 때문에, 어떤 `Promise`가 문제를 일으켰는지 파악하기 힘들 수 있다.
    - 동시에 많은 `Promise`를 실행하면 시스템 리소스에 큰 부하가 걸릴 수 있다. 때문에 적절한 병렬 수를 관리하는 것이 중요하다.
 
-
-
 참조
 
 https://gurindernarang.medium.com/asynchronous-programming-callbacks-async-await-promises-in-js-19e294e84a79
@@ -492,4 +476,3 @@ https://gurindernarang.medium.com/asynchronous-programming-callbacks-async-await
 https://inpa.tistory.com/entry/%F0%9F%8C%90-js-async#%EC%99%9C_%EC%99%84%EB%B2%BD%ED%95%9C_%EB%A9%80%ED%8B%B0_%EC%8A%A4%EB%A0%88%EB%94%A9%EC%9D%B4_%EC%95%84%EB%8B%8C%EA%B0%80
 
 https://inpa.tistory.com/entry/JS-%F0%9F%93%9A-%EB%B9%84%EB%8F%99%EA%B8%B0%EC%B2%98%EB%A6%AC-async-await
-
