@@ -1,0 +1,12 @@
+---
+layout: single
+title: "[ JAVASCRIPT ] 이벤트 루프(Event Loop)"
+typora-root-url: ../
+categories: [📌 JAVASCRIPT]
+tag: [이벤트루프]
+author_profile: false # 연락처 정보 숨기기
+sidebar: # 사이드바 네이게이션 수정
+  # nav: "docs" # /_data/navigation.yml의 docs를 의미
+  nav: "counts"
+search: true
+---
