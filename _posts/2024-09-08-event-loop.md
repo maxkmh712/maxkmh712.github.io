@@ -52,11 +52,16 @@ search: true
 
 
 
-## 2. Node.js 동작원리
+## 2. Event Loop 동작원리 ✍🏻
 
-✍🏻
+![eventloop](/images/2024-09-08-event-loop/eventloop.png)
 
-
+1. 모든 함수 호출은 Call Stack에 LIFP 구조로 쌓인다.
+2. 비동기 함수는 Call Stack에 들어오는 즉시 Background로 보내진다.
+3. Background에서 처리가 완료되면, Callback 함수는 Event Queue에 FIFO 구조로 쌓인다.
+4. Event Loop는 Call Stack이 비어있는지 수시로 확인한다.
+5. Call Stack이 비어있을 경우, Event Loop는 Event Queue에서 Callback 함수를 shift 한다.
+6. shift 된 Callback 함수는 Call Stack으로 옮겨진 후 실행된다.
 
 
 
