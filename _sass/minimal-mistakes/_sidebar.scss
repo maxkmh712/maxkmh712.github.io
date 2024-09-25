@@ -126,6 +126,8 @@
   vertical-align: top;
   width: 36px;
   height: 36px;
+  margin-top: 0; // 추가
+  padding-top: 0; // 추가
 
   @include breakpoint($large) {
     display: block;
@@ -214,7 +216,7 @@
 
     &:before {
       @supports (pointer-events: none) {
-        content: '';
+        content: "";
         position: fixed;
         top: 0;
         inset-inline-start: 0;
@@ -346,4 +348,132 @@
     width: initial;
     margin-inline-end: initial;
   }
+}
+
+.sidebar {
+  @include clearfix();
+  overflow-x: hidden; // 가로 스크롤바 숨기기
+
+  @include breakpoint($large) {
+    float: left;
+    width: calc(#{$right-sidebar-width-narrow} - 1em);
+    opacity: 1;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+
+    &.sticky {
+      overflow-y: auto;
+      /* calculate height of nav list
+         viewport height - nav height - masthead x-padding
+      */
+      max-height: calc(100vh - #{$nav-height} - 2em);
+    }
+    // opacity: 1;
+    // -webkit-transition: opacity 0.2s ease-in-out;
+    // transition: opacity 0.2s ease-in-out;
+
+    // &.sticky {
+    //   overflow-y: auto;
+    //   height: calc(100vh - #{$nav-height} - 2em);
+    // }
+  }
+
+  .nav__list {
+    padding: 1em 0;
+
+    .nav__items {
+      font-size: 0.9em;
+      line-height: 1.8;
+
+      li {
+        margin-bottom: 0.5em;
+        transition: all 0.3s ease;
+        padding-left: 5px;
+
+        &:hover {
+          padding-left: 10px;
+        }
+
+        a {
+          color: $text-color;
+          text-decoration: none;
+          transition: color 0.3s ease;
+          display: block;
+
+          &:hover {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+
+  &__right {
+    margin-top: 0;
+  }
+
+  .author__avatar {
+    display: block;
+    width: auto;
+    height: auto;
+    margin-top: 0;
+    padding-top: 0;
+
+    img {
+      max-width: 110px;
+      border-radius: 50%;
+    }
+  }
+
+  .author__content {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-top: 10px;
+  }
+
+  .author__name {
+    margin: 10px 0;
+    font-size: $type-size-5;
+  }
+
+  .author__bio {
+    margin: 0;
+    font-size: $type-size-6;
+  }
+}
+
+.greedy-nav {
+  background: $background-color;
+}
+
+.layout-archive,
+.layout-category,
+.layout-tag,
+.layout-single {
+  .sidebar {
+    &__right {
+      margin-top: 0;
+    }
+
+    .author__avatar {
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    .author__content {
+      margin-top: 0;
+      padding-top: 0;
+    }
+  }
+}
+
+.page__content,
+.archive {
+  padding-top: 1em;
+}
+
+.author__avatar-wrapper {
+  margin-top: 0;
+  padding-top: 0;
 }

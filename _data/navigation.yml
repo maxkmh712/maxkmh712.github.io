@@ -27,7 +27,7 @@ docs:
     #   url: /sitemap/
 
 counts:
-  - title: "카테고리"
+  - title: "Category"
     use: true
   - title: "태그"
     use: false

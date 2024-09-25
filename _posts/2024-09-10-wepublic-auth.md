@@ -1,13 +1,10 @@
 ---
 layout: single
-title: "[ 프로젝트 회고 ] 외주 프로젝트 로그인 인증 과정"
+title: "[ PROJECT ] 외주 프로젝트 로그인 인증 과정"
 typora-root-url: ../
-categories: [📌 프로젝트 회고]
+categories: [PROJECT]
 tag: [인증]
-author_profile: false # 연락처 정보 숨기기
-sidebar: # 사이드바 네이게이션 수정
-  # nav: "docs" # /_data/navigation.yml의 docs를 의미
-  nav: "counts"
+author_profile: true # 연락처 정보 숨기기
 search: true
 ---
 
@@ -29,8 +26,6 @@ search: true
 
 3. 이 QR코드를 인증하면, 마이키핀 서버를 통해 로그인 시도한 유저의 DID, EOA, 개인정보를 받아올 수 있었다.
 4. 이 데이터들을 사용하여 DB를 조회하여 회원가입과 로그인 처리를 진행하였다.
-
-
 
 ## 2. 회원가입 및 로그인 성공 시 인증 과정
 

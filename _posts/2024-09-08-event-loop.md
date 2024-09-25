@@ -2,12 +2,9 @@
 layout: single
 title: "[ NODE.JS ] Node.js 구조와 동작원리"
 typora-root-url: ../
-categories: [📌 NODE.JS]
+categories: NODE.JS
 tag: [V8엔진, Libuv, 이벤트루프, 이벤트큐]
-author_profile: false # 연락처 정보 숨기기
-sidebar: # 사이드바 네이게이션 수정
-  # nav: "docs" # /_data/navigation.yml의 docs를 의미
-  nav: "counts"
+author_profile: true # 연락처 정보 숨기기
 search: true
 ---
 
@@ -41,16 +38,14 @@ search: true
      5. Close Callbacks : 닫기 이벤트(`close` 콜백)들이 처리된다.
 
 4. 이벤트 큐 (Event Queue)
-   - 역할 : Node.js의 이벤트 루프와 밀접하게 관련된 개념으로,  타이머(`setTimeout`, `setInterval`), I/O 작업(파일 시스템, 네트워크 요청 등), `Promise`의 `.then()` 메서드 등 비동기적으로 처리되는 모든 작업의 콜백을 대기시킨다. 또한, 이벤트 루프가 Call Stack이 비어 있을 때마다 이벤트 큐에서 가장 오래된 콜백을 가져와 실행한다.
-   - 특징 : FIFO 구죄고, 싱글 스레드 기반으로 모든 콜백이 순차적으로 실행된다. 이벤트 루프가 이벤트 큐를 계속 확인하며, Call Stack이 비어 있을 때 이벤트 큐에서 작업을 가져와 처리한다. 
+   - 역할 : Node.js의 이벤트 루프와 밀접하게 관련된 개념으로, 타이머(`setTimeout`, `setInterval`), I/O 작업(파일 시스템, 네트워크 요청 등), `Promise`의 `.then()` 메서드 등 비동기적으로 처리되는 모든 작업의 콜백을 대기시킨다. 또한, 이벤트 루프가 Call Stack이 비어 있을 때마다 이벤트 큐에서 가장 오래된 콜백을 가져와 실행한다.
+   - 특징 : FIFO 구죄고, 싱글 스레드 기반으로 모든 콜백이 순차적으로 실행된다. 이벤트 루프가 이벤트 큐를 계속 확인하며, Call Stack이 비어 있을 때 이벤트 큐에서 작업을 가져와 처리한다.
 5. 바인딩 (Bindings)
    - 역할 : Node.js와 C/C++로 작성된 라이브러리 간의 상호작용을 지원하는 메커니즘
    - 특징 : Node.js는 네이티브 성능을 제공하기 위해 V8과 Libuv 외에도, 특정 작업을 고속으로 수행할 수 있는 C/C++로 작성된 네이티브 모듈들을 사용한다. 예를 들어 파일 시스템 작업이나 네트워크 작업은 C/C++ 코드를 통해 더 빠르게 처리된다.
 6. 워커스레드 (Worker Threads)
-   - 역할 :  Node.js 10.5.0 버전부터 도입된 모듈로 복잡한 계산, 이미지 처리, 암호화, 압축 등과 같이 CPU를 많이 사용하는 작업을 메인 스레드에서 분리하여 별도의 스레드에서 처리하게 한다. 기본적으로 싱글 스레드로 동작하는 Node.js의 한계를 보완하여, 멀티스레드 처리를 가능하게 한다.
+   - 역할 : Node.js 10.5.0 버전부터 도입된 모듈로 복잡한 계산, 이미지 처리, 암호화, 압축 등과 같이 CPU를 많이 사용하는 작업을 메인 스레드에서 분리하여 별도의 스레드에서 처리하게 한다. 기본적으로 싱글 스레드로 동작하는 Node.js의 한계를 보완하여, 멀티스레드 처리를 가능하게 한다.
    - 특징 : Node.js의 기존 비동기 모델과 달리, 워커 스레드는 실제로 여러 스레드를 사용하여 동시 작업을 처리할 수 있다. 각 워커는 독립된 V8 인스턴스를 사용하여 실행된다. 즉, 메모리와 변수는 워커 간에 공유되지 않으며, 서로 데이터를 주고받을 때는 메시지 기반 통신을 사용한다.
-
-
 
 ## 2. Event Loop 동작원리 ✍🏻
 
@@ -63,15 +58,7 @@ search: true
 5. Call Stack이 비어있을 경우, Event Loop는 Event Queue에서 Callback 함수를 shift 한다.
 6. shift 된 Callback 함수는 Call Stack으로 옮겨진 후 실행된다.
 
-
-
 ---
-
-
-
-
-
-
 
 참조
 
@@ -79,4 +66,3 @@ search: true
 https://reliasoftware.com/blog/node-js-event-loop
 
 ```
-

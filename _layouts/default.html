@@ -14,7 +14,9 @@
     {% include_cached masthead.html %}
 
     <div class="initial-content">
-      {{ content }}
+      <div id="main" role="main" class="layout-{{ page.layout | default: 'default' }}">
+        {{ content }}
+      </div>
       {% include after-content.html %}
     </div>
 

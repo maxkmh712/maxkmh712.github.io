@@ -4,4 +4,29 @@ layout: archive
 
 {{ content }}
 
-{% include posts-taxonomy.html taxonomies=site.categories %}
+<div class="category-grid">
+  {% for category in site.categories %} {% assign category_name = category[0] %}
+  {% assign posts = category[1] %} {% assign category_slug = category_name |
+  slugify %}
+  <div
+    class="category-card"
+    style="background-color: {{ site.data.category_colors[category_slug] | default: '#f2f3f3' }};"
+  >
+    <h2 class="category-title">
+      <a
+        href="{{ site.baseurl }}/categories/{{ category_name | slugify | downcase }}/"
+      >
+        {{ category_name }}
+      </a>
+    </h2>
+    <p class="category-count">{{ posts.size }}개의 포스트</p>
+    {% if posts.first.image %}
+    <img
+      src="{{ posts.first.image | relative_url }}"
+      alt="{{ category_name }}"
+      class="category-image"
+    />
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>

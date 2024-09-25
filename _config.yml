@@ -115,18 +115,18 @@ author:
   name:
   avatar: "/assets/images/max.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio:
-  location: "Seoul, South Korea"
+  # location: "Seoul, South Korea"
   email:
   links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:maxkmh@hanmail.net"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/maxkmh712"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://www.instagram.com/minoooookim?igsh=Mm5zamdia3g5NDVh&utm_source=qr"
+    # - label: "Email"
+    #   icon: "fas fa-fw fa-envelope-square"
+    #   url: "mailto:maxkmh@hanmail.net"
+    # - label: "GitHub"
+    #   icon: "fab fa-fw fa-github"
+    #   url: "https://github.com/maxkmh712"
+    # - label: "Instagram"
+    #   icon: "fab fa-fw fa-instagram"
+    #   url: "https://www.instagram.com/minoooookim?igsh=Mm5zamdia3g5NDVh&utm_source=qr"
 
 # Site Footer
 footer:
@@ -284,10 +284,10 @@ compress_html:
 defaults:
   # _posts
   - scope:
-      path: ""
+      path: "_pages"
       type: posts
     values:
-      layout: single
+      layout: category
       author_profile: true
       read_time: false # ~분 소요 제거
       comments: # true

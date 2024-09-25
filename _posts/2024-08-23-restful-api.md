@@ -2,14 +2,10 @@
 layout: single
 title: "[ 백엔드 ] RESTful API"
 typora-root-url: ../
-categories: [📌 BACKEND]
+categories: [BACKEND]
 tag: [REST API]
-author_profile: false # 연락처 정보 숨기기
-sidebar: # 사이드바 네이게이션 수정
-  # nav: "docs" # /_data/navigation.yml의 docs를 의미
-  nav: "counts"
+author_profile: true # 연락처 정보 숨기기
 search: true
-
 ---
 
 ![restapi](/images/2024-08-23-first/restapi.png)
@@ -20,8 +16,6 @@ search: true
 - 클라이언트와 서버 간의 통신을 간단하고 확장 가능하게 만드는 것을 목적으로 한다.
 - RESTful API는 이러한 "REST 원칙을 따르는 API"라는 뜻으로 API가 REST 원칙에 충실하게 설계되었음을 강조할 때 사용된다.
 - **REST API**는 RESTful한 API를 포함하지만 더 넓게 사용될 수 있는 용어이고, 두 개가 흔히 혼용되지만, 엄밀하게 구분하자면 RESTful API가 좀 더 엄격한 REST 준수성을 나타낸다.
-
-
 
 # 2. REST의 6가지 기본 원칙
 
@@ -55,8 +49,6 @@ search: true
 
    - 설명: 필요에 따라 클라이언트는 서버로부터 코드를 다운로드하여 실행할 수 있다
    - 이점: 클라이언트의 기능을 확장할 수 있지만, 이 원칙은 선택 사항이다.
-
-
 
 # 3. REST API URI 네이밍 원칙
 
@@ -118,21 +110,21 @@ search: true
    - URI 마지막에 슬래시(/)를 사용하지 마라
 
      ```
-     http://api.example.com/device-management/managed-devices/ 
-     
+     http://api.example.com/device-management/managed-devices/
+
      http://api.example.com/device-management/managed-devices         /*This is much better version*/
      ```
 
-   - URI 가독성을 위해 언더바(_)를 사용하지 말고 하이픈(-)을 사용해라
+   - URI 가독성을 위해 언더바(\_)를 사용하지 말고 하이픈(-)을 사용해라
 
      ```
      http://api.example.com/devicemanagement/manageddevices/
-     
-     http://api.example.com/device-management/managed-devices 	
+
+     http://api.example.com/device-management/managed-devices
      /*This is much better version*/
      ```
 
-     애플리케이션 글꼴에 따라 일부 브라우저나 화면에서는 언더바(_)가 안보일 수 있기 때문이다.
+     애플리케이션 글꼴에 따라 일부 브라우저나 화면에서는 언더바(\_)가 안보일 수 있기 때문이다.
 
    - URI에 소문자를 사용해라
 
@@ -148,7 +140,7 @@ search: true
 
      ```
      /device-management/managed-devices.xml  /*Do not use it*/
-     
+
      /device-management/managed-devices 	/*This is correct URI*/
      ```
 
@@ -157,19 +149,19 @@ search: true
    - URI에 CRUD 함수 명을 사용하지 마라
 
      ```
-     HTTP GET /device-management/managed-devices  			
+     HTTP GET /device-management/managed-devices
      //Get all devices
-     
-     HTTP POST /device-management/managed-devices  			
+
+     HTTP POST /device-management/managed-devices
      //Create new Device
-     
-     HTTP GET /device-management/managed-devices/{id}  		
+
+     HTTP GET /device-management/managed-devices/{id}
      //Get device for given Id
-     
-     HTTP PUT /device-management/managed-devices/{id}  		
+
+     HTTP PUT /device-management/managed-devices/{id}
      //Update device for given Id
-     
-     HTTP DELETE /device-management/managed-devices/{id}  	
+
+     HTTP DELETE /device-management/managed-devices/{id}
      //Delete device for given Id
      ```
 
@@ -179,11 +171,11 @@ search: true
 
      ```
      /device-management/managed-devices
-     
+
      /device-management/managed-devices?region=USA
-     
+
      /device-management/managed-devices?region=USA&brand=XYZ
-     
+
      /device-management/managed-devices?region=USA&brand=XYZ&sort=installation-date
      ```
 
@@ -191,21 +183,17 @@ search: true
 
 3. URI에 동사를 사용하지 마라
 
-   REST는 명사를 사용하여 자원을 표현하고, HTTP 메서 (GET, POST, PUT, DELETE, etc.)를 사용해서 동사 역할을 수행한다. 
+   REST는 명사를 사용하여 자원을 표현하고, HTTP 메서 (GET, POST, PUT, DELETE, etc.)를 사용해서 동사 역할을 수행한다.
 
    ```
-   /device-management/managed-devices/{id}/scripts/{id}/execute    
+   /device-management/managed-devices/{id}/scripts/{id}/execute
    //It is RPC, and not REST
-   
-   /device-management/managed-devices/{id}/scripts/{id}/status		
+
+   /device-management/managed-devices/{id}/scripts/{id}/status
    //POST request with action=execute
    ```
 
-   
-
 ✍🏻 RPC 호출
-
-
 
 참고
 

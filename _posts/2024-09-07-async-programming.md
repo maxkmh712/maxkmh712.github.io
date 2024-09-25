@@ -2,12 +2,9 @@
 layout: single
 title: "[ NODE.JS ] 비동기 프로그래밍"
 typora-root-url: ../
-categories: [📌 NODE.JS]
+categories: NODE.JS
 tag: [콜백함수, Promise, async/await, 비동기]
-author_profile: false # 연락처 정보 숨기기
-sidebar: # 사이드바 네이게이션 수정
-  # nav: "docs" # /_data/navigation.yml의 docs를 의미
-  nav: "counts"
+author_profile: true # 연락처 정보 숨기기
 search: true
 ---
 
@@ -170,7 +167,7 @@ processArray(numbers, printElement);
   const promise = new Promise((resolve, reject) => {
     // 비동기 작업 수행
     const success = true; // 작업의 성공 여부 예시
-  
+
     if (success) {
       resolve("작업 성공"); // 성공 시 호출
     } else {
@@ -356,7 +353,7 @@ async function handleData() {
       }, 1000);
     });
   }
-  
+
   // Promise 사용 예시
   fetchData()
     .then((data) => {
@@ -368,7 +365,7 @@ async function handleData() {
     .finally(() => {
       console.log("작업 완료"); // 성공 여부와 상관없이 항상 실행
     });
-  
+
   // async/await 사용
   async function handleData() {
     try {
@@ -392,7 +389,7 @@ async function handleData() {
 
 **1) async의 리턴값은 Promise 객체이다.**
 
-![async-return-promise](/images/2024-09-07-async-programming/async-return-promise.png) 
+![async-return-promise](/images/2024-09-07-async-programming/async-return-promise.png)
 
 단순히 숫자를 리턴하더라도 `fulfilled` 상태의 promise 객체로 감싸진 형태의 리턴값이 반환된다.
 
@@ -478,6 +475,3 @@ https://inpa.tistory.com/entry/%F0%9F%8C%90-js-async#%EC%99%9C_%EC%99%84%EB%B2%B
 
 https://inpa.tistory.com/entry/JS-%F0%9F%93%9A-%EB%B9%84%EB%8F%99%EA%B8%B0%EC%B2%98%EB%A6%AC-async-await
 ```
-
-
-
