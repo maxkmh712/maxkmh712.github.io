@@ -6,6 +6,7 @@ categories: [PROJECT]
 tag: [redis, AWS SQS]
 author_profile: true # 연락처 정보 숨기기
 search: true
+toc: true
 ---
 
 ![real-photobooth](/images/2024-09-10-photobooth-structure/real-photobooth.png)

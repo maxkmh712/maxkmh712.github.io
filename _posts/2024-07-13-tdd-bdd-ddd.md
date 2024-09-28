@@ -6,6 +6,7 @@ categories: METHODOLOGY
 tag: [methodology, tdd, bdd, ddd]
 author_profile: true # 연락처 정보 숨기기
 search: true
+toc: true
 ---
 
 ![1_WaDr-xoj3UHhb-tSNQOADg](/images/2024-07-13-first/1_WaDr-xoj3UHhb-tSNQOADg-0840971.webp){: .img-width-eighty .align-center}
