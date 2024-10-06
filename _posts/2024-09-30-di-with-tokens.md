@@ -7,6 +7,7 @@ tag: [di, symbol]
 author_profile: true # 연락처 정보 숨기기
 search: true
 toc: true
+toc_sticky: true
 ---
 
 ![nestjs-logo-social](/images/2024-09-30-di-with-tokens/nestjs-logo-social.png)
@@ -19,7 +20,7 @@ NestJS에서 기본적인 의존성 주입은 보통 클래스 이름을 이용�
 @Injectable()
 export class MyService {
   getHello(): string {
-    return 'Hello World!';
+    return "Hello World!";
   }
 }
 ```
@@ -36,8 +37,6 @@ export class MyController {
 }
 ```
 
-
-
 ## 2. 토큰을 이용한 커스텀 프로바이더
 
 NestJS에서는 의존성을 **토큰**을 통해 주입할 수 있는데, 이 방법은 여러 인스턴스를 관리하거나, 주입하는 의존성을 좀 더 세밀하게 제어하고 싶을 때 사용된다. 여기서는 `symbol`을 토큰으로 사용하는 방법을 예시로 들어보고자 한다.
@@ -47,30 +46,28 @@ NestJS에서는 의존성을 **토큰**을 통해 주입할 수 있는데, 이 �
 먼저, `symbol`을 이용해 고유한 토큰을 정의한다.
 
 ```typescript
-export const CUSTOM_TOKEN = Symbol('CUSTOM_TOKEN');
+export const CUSTOM_TOKEN = Symbol("CUSTOM_TOKEN");
 ```
 
 ```markdown
 💡 symbol이란?
 
-JavaScript의 내장 객체로, 고유하고 변경 불가능한 원시 값(primitive value)을 생성하는 데 사용되고, 
+JavaScript의 내장 객체로, 고유하고 변경 불가능한 원시 값(primitive value)을 생성하는 데 사용되고,
 주로 객체의 속성 키를 정의할 때 충돌을 방지하기 위해 사용된다. symbol의 특성은 아래와 같다.
 
 1. 고유성: 각 Symbol은 항상 고유하기 때문에 키 충돌 없이 속성을 정의할 수 있다.
 2. 변경 불가능성: 한 번 생성된 Symbol은 변경할 수 없기 때문에 Symbol을 사용하는 객체 속성의 안정성을 보장한다.
 ```
 
-
-
-이 `CUSTOM_TOKEN`을 사용하여 `useValue`, `useClass`, `useFactory`, `useExisting`등의 프로바이더 형태로 주입할 수 있다. 
+이 `CUSTOM_TOKEN`을 사용하여 `useValue`, `useClass`, `useFactory`, `useExisting`등의 프로바이더 형태로 주입할 수 있다.
 
 - **`useValue`**: 단순 값 (객체, 문자열 등)을 주입할 때 사용한다. 이 값은 주입된 프로바이더의 인스턴스를 생성하지 않고, 기존의 값을 그대로 제공한다.
 
   ```typescript
-  export const CUSTOM_TOKEN = Symbol('CUSTOM_TOKEN');
-  
-  const customValue = { message: 'Hello, World!' };
-  
+  export const CUSTOM_TOKEN = Symbol("CUSTOM_TOKEN");
+
+  const customValue = { message: "Hello, World!" };
+
   @Module({
     providers: [
       {
@@ -80,11 +77,13 @@ JavaScript의 내장 객체로, 고유하고 변경 불가능한 원시 값(prim
     ],
   })
   export class CustomModule {}
-  
+
   @Injectable()
   export class MyService {
-    constructor(@Inject(CUSTOM_TOKEN) private readonly customValue: { message: string }) {}
-  
+    constructor(
+      @Inject(CUSTOM_TOKEN) private readonly customValue: { message: string }
+    ) {}
+
     getMessage() {
       return this.customValue.message; // 'Hello, World!'
     }
@@ -94,15 +93,15 @@ JavaScript의 내장 객체로, 고유하고 변경 불가능한 원시 값(prim
 - **`useClass`**: 특정 클래스를 프로바이더로 사용하여 인스턴스를 생성한다. 이 방식은 주입된 클래스의 인스턴스에 대한 의존성을 제공할 수 있다.
 
   ```typescript
-  export const CUSTOM_TOKEN = Symbol('CUSTOM_TOKEN');
-  
+  export const CUSTOM_TOKEN = Symbol("CUSTOM_TOKEN");
+
   @Injectable()
   export class CustomService {
     getGreeting() {
-      return 'Hello from CustomService!';
+      return "Hello from CustomService!";
     }
   }
-  
+
   @Module({
     providers: [
       {
@@ -112,11 +111,13 @@ JavaScript의 내장 객체로, 고유하고 변경 불가능한 원시 값(prim
     ],
   })
   export class CustomModule {}
-  
+
   @Injectable()
   export class MyService {
-    constructor(@Inject(CUSTOM_TOKEN) private readonly customService: CustomService) {}
-  
+    constructor(
+      @Inject(CUSTOM_TOKEN) private readonly customService: CustomService
+    ) {}
+
     greet() {
       return this.customService.getGreeting(); // 'Hello from CustomService!'
     }
@@ -126,24 +127,26 @@ JavaScript의 내장 객체로, 고유하고 변경 불가능한 원시 값(prim
 - **`useFactory`**: 팩토리 함수를 사용하여 프로바이더의 인스턴스를 생성할 때 사용한다. 이 방식은 복잡한 생성 로직이나 동적인 인스턴스 생성을 지원한다.
 
   ```typescript
-  export const CUSTOM_TOKEN = Symbol('CUSTOM_TOKEN');
-  
+  export const CUSTOM_TOKEN = Symbol("CUSTOM_TOKEN");
+
   @Module({
     providers: [
       {
         provide: CUSTOM_TOKEN,
         useFactory: () => {
-          return { message: 'Hello from useFactory!' };
+          return { message: "Hello from useFactory!" };
         },
       },
     ],
   })
   export class CustomModule {}
-  
+
   @Injectable()
   export class MyService {
-    constructor(@Inject(CUSTOM_TOKEN) private readonly customValue: { message: string }) {}
-  
+    constructor(
+      @Inject(CUSTOM_TOKEN) private readonly customValue: { message: string }
+    ) {}
+
     getMessage() {
       return this.customValue.message; // 'Hello from useFactory!'
     }
@@ -153,16 +156,16 @@ JavaScript의 내장 객체로, 고유하고 변경 불가능한 원시 값(prim
 - **`useExisting`**: 다른 프로바이더의 인스턴스를 재사용한다. 즉, 기존 프로바이더의 인스턴스를 참조하여 같은 인스턴스를 여러 토큰으로 주입할 수 있다.
 
   ```typescript
-  export const BASE_SERVICE_TOKEN = Symbol('BASE_SERVICE_TOKEN');
-  export const CUSTOM_TOKEN = Symbol('CUSTOM_TOKEN');
-  
+  export const BASE_SERVICE_TOKEN = Symbol("BASE_SERVICE_TOKEN");
+  export const CUSTOM_TOKEN = Symbol("CUSTOM_TOKEN");
+
   @Injectable()
   export class BaseService {
     getMessage() {
-      return 'Hello from BaseService!';
+      return "Hello from BaseService!";
     }
   }
-  
+
   @Module({
     providers: [
       {
@@ -176,11 +179,13 @@ JavaScript의 내장 객체로, 고유하고 변경 불가능한 원시 값(prim
     ],
   })
   export class CustomModule {}
-  
+
   @Injectable()
   export class MyService {
-    constructor(@Inject(CUSTOM_TOKEN) private readonly baseService: BaseService) {}
-  
+    constructor(
+      @Inject(CUSTOM_TOKEN) private readonly baseService: BaseService
+    ) {}
+
     getMessage() {
       return this.baseService.getMessage(); // 'Hello from BaseService!'
     }
@@ -207,21 +212,21 @@ export class MyService {
 NestJS에서는 같은 클래스의 여러 인스턴스를 다룰 때, 토큰을 사용하는 것이 매우 유용하다. 예를 들어, 여러 개의 Redis 클라이언트 인스턴스를 사용해야 할 때는 각 인스턴스를 각각의 토큰으로 등록하고 주입할 수 있다. 아래와 같이 `REDIS_CLIENT_1`과 `REDIS_CLIENT_2` 토큰을 이용해 두 개의 서로 다른 Redis 클라이언트를 주입받아 사용할 수 있습니다.
 
 ```typescript
-export const REDIS_CLIENT_1 = Symbol('REDIS_CLIENT_1');
-export const REDIS_CLIENT_2 = Symbol('REDIS_CLIENT_2');
+export const REDIS_CLIENT_1 = Symbol("REDIS_CLIENT_1");
+export const REDIS_CLIENT_2 = Symbol("REDIS_CLIENT_2");
 
 @Module({
   providers: [
     {
       provide: REDIS_CLIENT_1,
       useFactory: () => {
-        return new Redis({ host: 'localhost', port: 6379 });
+        return new Redis({ host: "localhost", port: 6379 });
       },
     },
     {
       provide: REDIS_CLIENT_2,
       useFactory: () => {
-        return new Redis({ host: 'localhost', port: 6380 });
+        return new Redis({ host: "localhost", port: 6380 });
       },
     },
   ],
@@ -235,20 +240,20 @@ export class RedisModule {}
 export class MyService {
   constructor(
     @Inject(REDIS_CLIENT_1) private readonly redisClient1: Redis,
-    @Inject(REDIS_CLIENT_2) private readonly redisClient2: Redis,
+    @Inject(REDIS_CLIENT_2) private readonly redisClient2: Redis
   ) {}
 
   useRedis() {
     // 두 클라이언트 사용 가능
-    this.redisClient1.set('key1', 'value1');
-    this.redisClient2.set('key2', 'value2');
+    this.redisClient1.set("key1", "value1");
+    this.redisClient2.set("key2", "value2");
   }
 }
 ```
 
 ## 4. 토큰을 이용한 DI의 장점
 
-1. 유연성 
+1. 유연성
 
    동일한 클래스의 여러 인스턴스를 관리할 수 있다. 예를 들어, Redis 클라이언트처럼 동일한 타입의 여러 객체가 필요할 때 각 객체를 고유한 토큰으로 구분하여 주입하기 용이하다.
 
@@ -272,8 +277,6 @@ export class MyService {
 
    클래스 이름이나 인스턴스 이름이 중복되는 경우, 토큰을 사용하면 충돌을 피할 수 있다. 각 토큰은 고유하기 때문에, 서로 다른 의존성을 안전하게 주입할 수 있다.
 
-
-
 ## 5. 실제 사용 사례
 
 이미지를 삭제하는 모듈과 서비스를 만들어 사용했던 사례이다.
@@ -281,7 +284,7 @@ export class MyService {
 1. DI 토큰 정의
 
    ```typescript
-   export const OLD_IMAGE_DELETE = Symbol('OLD_IMAGE_DELETE');
+   export const OLD_IMAGE_DELETE = Symbol("OLD_IMAGE_DELETE");
    ```
 
    `Symbol`을 사용하여 고유한 토큰을 정의한다. `Symbol`은 유일성이 보장되므로, 여러 프로바이더 간의 이름 충돌을 피할 수 있다. 이 코드를 별도의 파일에 저장하여 프로젝트 구조를 깔끔하게 유지하고 어느 곳에서도 쉽게 import하여 재사용성을 높일 수 있다.
@@ -297,7 +300,7 @@ export class MyService {
          provide: OLD_IMAGE_DELETE_DAY,
          useValue: 10,
        },
-       OldImageDeleteService
+       OldImageDeleteService,
      ],
    })
    export class OldImageDeleteModule {}
@@ -310,12 +313,15 @@ export class MyService {
    ```typescript
    @Injectable()
    export class OldImageClearService {
-     constructor(@Inject(OLD_IMAGE_DELETE_DAY) private readonly DELETE_CRITERIA_DAY: number) {}
-     
-       private async imagesDelete() {
+     constructor(
+       @Inject(OLD_IMAGE_DELETE_DAY)
+       private readonly DELETE_CRITERIA_DAY: number
+     ) {}
+
+     private async imagesDelete() {
        const period = `${this.DELETE_CRITERIA_DAY} days'`;
      }
    }
    ```
 
-   `constructor`에서 `@Inject(OLD_IMAGE_DELETE)`를 사용하여 `OLD_IMAGE_DELETE` 토큰에 해당하는 값을 주입받는다.  이 경우, `10`이라는 값이 `DELETE_CRITERIA_DAY` 변수에 할당된다.
+   `constructor`에서 `@Inject(OLD_IMAGE_DELETE)`를 사용하여 `OLD_IMAGE_DELETE` 토큰에 해당하는 값을 주입받는다. 이 경우, `10`이라는 값이 `DELETE_CRITERIA_DAY` 변수에 할당된다.

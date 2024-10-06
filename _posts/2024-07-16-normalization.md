@@ -7,6 +7,7 @@ tag: [정규화, 반정규화]
 author_profile: true # 연락처 정보 숨기기
 search: true
 toc: true
+toc_sticky: true
 ---
 
 # ![database-normalization](/images/2024-07-16-first/database-normalization.jpg)

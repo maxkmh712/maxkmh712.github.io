@@ -7,6 +7,7 @@ tag: [콜백함수, Promise, async/await, 비동기]
 author_profile: true # 연락처 정보 숨기기
 search: true
 toc: true
+toc_sticky: true
 ---
 
 ![async](/images/2024-09-07-first/async.png)

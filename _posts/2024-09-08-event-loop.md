@@ -7,6 +7,7 @@ tag: [V8엔진, Libuv, 이벤트루프, 이벤트큐]
 author_profile: true # 연락처 정보 숨기기
 search: true
 toc: true
+toc_sticky: true
 ---
 
 ![node_js_event_loop_system_328ebcac21](/images/2024-09-08-event-loop/node_js_event_loop_system_328ebcac21.webp)

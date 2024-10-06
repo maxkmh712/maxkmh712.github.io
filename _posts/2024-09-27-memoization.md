@@ -7,6 +7,7 @@ tag: [memoization]
 author_profile: true # 연락처 정보 숨기기
 search: true
 toc: true
+toc_sticky: true
 ---
 
 ![memoization](/images/2024-09-27-memoization/memoization.png)
@@ -21,27 +22,25 @@ toc: true
 - 메모이제이션은 **동적 프로그래밍(DP) 문제**와 같은 곳에서 이미 계산된 부분 문제들을 재사용하여 계산량을 줄여줄 수 있다.
 - 위와 같은 경우 캐시 메모리에 많은 데이터를 저장할 경우 발생할 수 있는 **메모리 사용량 증가에 유의**하는 것이 좋다.
 
-
-
 ### 2. 동작 원리 & 예제
 
-####  1) 동작원리
+#### 1) 동작원리
 
 ```javascript
 function memoize(fn) {
   const cache = {};
 
-  return function(...args) {
-    const key = JSON.stringify(args); 
+  return function (...args) {
+    const key = JSON.stringify(args);
     // 입력값을 문자열로 변환하여 캐시 키로 사용
 
     if (cache[key]) {
       return cache[key];
     }
-    
+
     const result = fn(...args);
     cache[key] = result;
-    
+
     return result;
   };
 }
@@ -88,8 +87,6 @@ console.log(fibonacci(10)); // 55
 console.log(fibonacci(50)); // 매우 빠른 결과
 ```
 
-
-
 ### 3. Memoization의 장점과 단점
 
 #### 1) 장점
@@ -101,8 +98,6 @@ console.log(fibonacci(50)); // 매우 빠른 결과
 
 - 메모리 사용량 증가 : 함수 결과를 캐시해야 하므로, 메모리를 추가로 사용하게 된다. 캐시에 저장된 값들이 많아지면 메모리 문제가 발생할 수 있다.
 - 상태 관리 : 캐시가 계속 유지되면 불필요한 메모리 사용으로 이어질 수 있다. 이를 해결하기 위해 캐시를 관리하는 방법도 고려할 수 있다.
-
-
 
 ### 4. 사용 상황
 
@@ -118,11 +113,11 @@ console.log(fibonacci(50)); // 매우 빠른 결과
     if (n <= 1) return n;
     return fibonacci(n - 1) + fibonacci(n - 2);
   }
-  
+
   const memoizedFibonacci = memoize(fibonacci);
-  
-  console.log(memoizedFibonacci(10));  // 계산 후 결과 캐싱
-  console.log(memoizedFibonacci(10));  // 캐시에서 결과 가져오기
+
+  console.log(memoizedFibonacci(10)); // 계산 후 결과 캐싱
+  console.log(memoizedFibonacci(10)); // 캐시에서 결과 가져오기
   ```
 
 #### 2) 중복된 API 호출
@@ -136,9 +131,9 @@ console.log(fibonacci(50)); // 매우 빠른 결과
     const response = await fetch(`/api/users/${userId}`);
     return response.json();
   });
-  
-  fetchUserData(1);  // API 호출
-  fetchUserData(1);  // 캐시된 결과 반환
+
+  fetchUserData(1); // API 호출
+  fetchUserData(1); // 캐시된 결과 반환
   ```
 
 #### 3) 복잡한 계산을 여러 번 해야 할 때
@@ -153,16 +148,16 @@ console.log(fibonacci(50)); // 매우 빠른 결과
 
 #### 5) 복잡한 필터링 또는 검색
 
--  복잡한 필터링이나 검색 알고리즘을 자주 실행해야 하는 경우, 이전에 계산된 필터링 결과를 캐시해두면 성능을 향상시킬 수 있다.
+- 복잡한 필터링이나 검색 알고리즘을 자주 실행해야 하는 경우, 이전에 계산된 필터링 결과를 캐시해두면 성능을 향상시킬 수 있다.
 
 ### 5. Javascript에서 Memoization 적용 방법
 
 JavaScript에서 Memoization을 직접 구현할 수도 있지만, 일반적으로 더 복잡한 상황에서는 **Lodash** 같은 라이브러리의 `_.memoize` 함수를 사용하는 것이 편리하다
 
 ```javascript
-const _ = require('lodash');
+const _ = require("lodash");
 
-const fibonacci = _.memoize(function(n) {
+const fibonacci = _.memoize(function (n) {
   if (n <= 1) return n;
   return fibonacci(n - 1) + fibonacci(n - 2);
 });
@@ -170,20 +165,20 @@ const fibonacci = _.memoize(function(n) {
 console.log(fibonacci(50));
 ```
 
-
-
 ### 6. NestJS에서 Memoization 적용 방법
 
 #### 1-1) 기본 예시 서비스
 
 ```typescript
-import { Injectable } from '@nestjs/common';
-import axios from 'axios';
+import { Injectable } from "@nestjs/common";
+import axios from "axios";
 
 @Injectable()
 export class ApiService {
   async fetchData(param: string): Promise<any> {
-    const response = await axios.get(`https://api.example.com/data?param=${param}`);
+    const response = await axios.get(
+      `https://api.example.com/data?param=${param}`
+    );
     return response.data;
   }
 }
@@ -193,9 +188,9 @@ export class ApiService {
 
 #### 1-2) Memoization 적용하기
 
-``` typescript
-import { Injectable } from '@nestjs/common';
-import axios from 'axios';
+```typescript
+import { Injectable } from "@nestjs/common";
+import axios from "axios";
 
 @Injectable()
 export class ApiService {
@@ -207,7 +202,9 @@ export class ApiService {
       return this.cache.get(param); // 캐시된 결과 반환
     }
 
-    const response = await axios.get(`https://api.example.com/data?param=${param}`);
+    const response = await axios.get(
+      `https://api.example.com/data?param=${param}`
+    );
 
     // 새로운 결과를 캐시에 저장
     this.cache.set(param, response.data);
@@ -222,12 +219,12 @@ export class ApiService {
 캐시가 오래된 데이터를 반환하는 문제를 방지하기 위해 **TTL(Time to Live)**을 추가할 수 있다. 캐시 만료 시간을 설정하여 일정 시간 후에는 데이터를 새로 가져오도록 할 수 있다.
 
 ```typescript
-import { Injectable } from '@nestjs/common';
-import axios from 'axios';
+import { Injectable } from "@nestjs/common";
+import axios from "axios";
 
 @Injectable()
 export class ApiService {
-  private cache = new Map<string, { data: any, timestamp: number }>();
+  private cache = new Map<string, { data: any; timestamp: number }>();
   private cacheTTL = 60000; // 60초 (1분) 캐시 유효 기간
 
   async fetchData(param: string): Promise<any> {
@@ -236,13 +233,15 @@ export class ApiService {
     // 캐시가 존재하고, 유효 기간이 지나지 않았는지 확인
     if (this.cache.has(param)) {
       const cached = this.cache.get(param);
-      
+
       if (currentTime - cached.timestamp < this.cacheTTL) {
         return cached.data; // 캐시된 결과 반환
       }
     }
 
-    const response = await axios.get(`https://api.example.com/data?param=${param}`);
+    const response = await axios.get(
+      `https://api.example.com/data?param=${param}`
+    );
 
     // 새로운 결과를 캐시에 저장 (타임스탬프와 함께)
     this.cache.set(param, { data: response.data, timestamp: currentTime });
@@ -252,8 +251,6 @@ export class ApiService {
 }
 ```
 
-
-
 #### 2-1) Interceptor로 Memoization 적용
 
 ```typescript
@@ -262,9 +259,9 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+} from "@nestjs/common";
+import { Observable, of } from "rxjs";
+import { tap } from "rxjs/operators";
 
 @Injectable()
 export class CacheInterceptor implements NestInterceptor {
@@ -281,28 +278,26 @@ export class CacheInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap((response) => {
         this.cache.set(key, response); // 새로운 결과를 캐시에 저장
-      }),
+      })
     );
   }
 }
 ```
 
-NestJS의 **인터셉터**를 사용하면, 특정 경로에 대한 응답을 메모이제이션할 수 있다. 이렇게 하면 모든 컨트롤러 메서드에 memoization 로직을 넣을 필요 없이 중앙에서 캐싱을 관리할 수  있다.
+NestJS의 **인터셉터**를 사용하면, 특정 경로에 대한 응답을 메모이제이션할 수 있다. 이렇게 하면 모든 컨트롤러 메서드에 memoization 로직을 넣을 필요 없이 중앙에서 캐싱을 관리할 수 있다.
 
 ```typescript
-@Controller('data')
+@Controller("data")
 @UseInterceptors(CacheInterceptor) // ✅ 컨트롤러에 적용
 export class DataController {
   constructor(private readonly apiService: ApiService) {}
 
   @Get()
   async getData(): Promise<any> {
-    return this.apiService.fetchData('someParam');
+    return this.apiService.fetchData("someParam");
   }
 }
 ```
-
-
 
 참고
 
@@ -311,4 +306,3 @@ https://medium.com/@soyoung823/memoization-cache-f8b5930e3ee1
 
 https://medium.com/@amitsharma_24072/understanding-memoization-in-javascript-and-its-benefits-7343102f87cc
 ```
-
